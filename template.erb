@@ -66,6 +66,8 @@
   "Mappings" : {
     "AWSInstanceType2Arch" : {
       <% if pkg_64 %>
+        "m1.small"    : { "Arch" : "64" },
+        "m1.medium"   : { "Arch" : "64" },
         "m1.large"    : { "Arch" : "64" },
         "m1.xlarge"   : { "Arch" : "64" },
         "m2.xlarge"   : { "Arch" : "64" },
@@ -79,9 +81,9 @@
       <% end %>
     },
     "AWSRegionArch2AMI" : {
-      "us-east-1" : { "32" : "ami-7f418316", "64" : "ami-7341831a" },
-      "us-west-1" : { "32" : "ami-951945d0", "64" : "ami-971945d2" },
-      "eu-west-1" : { "32" : "ami-24506250", "64" : "ami-20506254" },
+      "us-east-1" : { "32" : "ami-7f418316", "64" : "ami-03ada46a" },
+      "us-west-1" : { "32" : "ami-951945d0", "64" : "ami-03ada46a" },
+      "eu-west-1" : { "32" : "ami-24506250", "64" : "ami-03ada46a" },
       "ap-southeast-1" : { "32" : "ami-74dda626", "64" : "ami-7edda62c" },
       "ap-northeast-1" : { "32" : "ami-dcfa4edd", "64" : "ami-e8fa4ee9" }
     }
@@ -125,11 +127,11 @@
         ],
         "UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
             "#!/bin/bash -ex","\n",
-            "yum -y install openssl098e","\n",
+            "yum -y install wget nc openssl098e","\n",
             "wget ", { "Ref" : "PackageURL" },"\n",
-            "rpm -i <%= pkg_base %>-server-<%= pkg_ver %>*.rpm","\n",
+            "rpm -i <%= pkg_name %>","\n",
             "/bin/sh -c \"", { "Ref" : "AfterInstall" }, "\"\n",
-            "sleep 5","\n",
+            "while ! nc -vz localhost 8091; do sleep 1; done","\n",
             <% if pkg_base == 'couchbase' %>
               "if [ \"default\" != \"", { "Ref" : "NumVBuckets" }, "\" ]; then","\n",
               "  wget https://raw.github.com/couchbaselabs/rampup/master/after-install","\n",
