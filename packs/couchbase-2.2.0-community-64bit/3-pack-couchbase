@@ -365,6 +365,10 @@
       }
     },
 
+    "IPAddress" : {
+      "Type" : "AWS::EC2::EIP"
+    },
+
     "WaitForServerNode0WaitHandle" : {
       "Type" : "AWS::CloudFormation::WaitConditionHandle",
       "Properties" : {
@@ -386,11 +390,8 @@
       "Description" : "The URL for the newly created couchbase node(s)",
       "Value" : { "Fn::Join" : ["", [ "http://", { "Fn::GetAtt" : [ "ServerNode0", "PublicIp" ] }, ":8091" ]]}
     },
-        "IPAddress" : {
-        "Value" : { "Ref" : "MyIp" }
-    },
-    "InstanceId" : {
-        "Value" : { "Ref" : "MyInstance" }
+    "InstanceIPAddress" : {
+        "Value" : { "Ref" : "IPAddress" }
     }
   }
 }
