@@ -250,6 +250,12 @@
     "RESTWebConsoleURL" : {
       "Description" : "The URL for the newly created <%= pkg_base %> node(s)",
       "Value" : { "Fn::Join" : ["", [ "http://", { "Fn::GetAtt" : [ "ServerNode0", "PublicIp" ] }, ":8091" ]]}
+    },
+        "IPAddress" : {
+        "Value" : { "Ref" : "MyIp" }
+    },
+    "InstanceId" : {
+        "Value" : { "Ref" : "MyInstance" }
     }
   }
 }
